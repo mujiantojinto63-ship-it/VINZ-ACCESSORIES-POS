@@ -20,12 +20,15 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      # Hapus tanda pagar (#) di bawah ini jika proyek Anda ada di dalam subfolder:
+      # working-directory: ./nama-folder-proyek-anda
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --stacktrace
+      run: ./gradlew assembleDebug
+      # working-directory: ./nama-folder-proyek-anda
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: app-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
+        path: '**/app/build/outputs/apk/debug/app-debug.apk'
