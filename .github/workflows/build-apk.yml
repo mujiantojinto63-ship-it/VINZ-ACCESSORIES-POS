@@ -20,11 +20,19 @@ jobs:
 
     - name: Build APK with Gradle
       run: |
-        chmod +x gradlew
-        ./gradlew assembleDebug -Pksp.mode=disabled
+        # Cari file gradlew secara otomatis di seluruh folder project
+        GRADLEW_PATH=$(find . -name "gradlew" -type f)
+        if [ -z "$GRADLEW_PATH" ]; then
+          echo "Gradle wrapper tidak ditemukan, membuat wrapper baru..."
+          gradle wrapper
+          GRADLEW_PATH="./gradlew"
+        fi
+        
+        chmod +x $GRADLEW_PATH
+        $GRADLEW_PATH assembleDebug -Pksp.mode=disabled
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: app-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
+        path: '**/app/build/outputs/apk/debug/app-debug.apk'
