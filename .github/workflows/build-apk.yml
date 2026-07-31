@@ -18,6 +18,11 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    - name: Remove custom debug signing config to prevent error
+      run: |
+        find . -name "build.gradle*" -exec sed -i '/signingConfigs/,/}/d' {} +
+        find . -name "build.gradle*" -exec sed -i '/signingConfig /d' {} +
+
     - name: Build APK with Gradle
       run: |
         gradle wrapper --gradle-version 9.4.0
