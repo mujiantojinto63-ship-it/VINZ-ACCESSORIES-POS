@@ -18,29 +18,14 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Locate and Build Project
-      run: |
-        # Mencari folder yang memiliki file build.gradle atau build.gradle.kts
-        PROJECT_PATH=$(find . -maxdepth 3 -name "build.gradle*" -not -path "*/.*" -exec dirname {} \;)
-        
-        if [ -z "$PROJECT_PATH" ]; then
-          echo "Error: File build.gradle tidak ditemukan!"
-          exit 1
-        fi
-        
-        echo "Proyek ditemukan di folder: $PROJECT_PATH"
-        cd "$PROJECT_PATH"
-        
-        # Jika file gradlew belum ada di folder proyek, buat wrapper otomatis
-        if [ ! -f "gradlew" ]; then
-          gradle wrapper
-        fi
-        
-        chmod +x gradlew
-        ./gradlew assembleDebug
+    - name: Grant execute permission for gradlew
+      run: chmod +x ./gradlew
+
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: app-debug
-        path: '**/app/build/outputs/apk/debug/app-debug.apk'
+        path: app/build/outputs/apk/debug/app-debug.apk
