@@ -1,3 +1,5 @@
+name: Build Android APK
+
 on:
   push:
     branches: [ "main", "master" ]
@@ -16,14 +18,23 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Find and build APK
+    - name: Locate and Build Project
       run: |
-        # Mencari letak file gradlew secara otomatis di dalam folder repository
-        GRADLEW_PATH=$(find . -name "gradlew" -type f -print -quit)
-        PROJECT_DIR=$(dirname "$GRADLEW_PATH")
+        # Mencari folder yang memiliki file build.gradle atau build.gradle.kts
+        PROJECT_PATH=$(find . -maxdepth 3 -name "build.gradle*" -not -path "*/.*" -exec dirname {} \;)
         
-        echo "Found project directory at: $PROJECT_DIR"
-        cd "$PROJECT_DIR"
+        if [ -z "$PROJECT_PATH" ]; then
+          echo "Error: File build.gradle tidak ditemukan!"
+          exit 1
+        fi
+        
+        echo "Proyek ditemukan di folder: $PROJECT_PATH"
+        cd "$PROJECT_PATH"
+        
+        # Jika file gradlew belum ada di folder proyek, buat wrapper otomatis
+        if [ ! -f "gradlew" ]; then
+          gradle wrapper
+        fi
         
         chmod +x gradlew
         ./gradlew assembleDebug
