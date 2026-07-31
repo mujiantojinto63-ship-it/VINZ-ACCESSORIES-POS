@@ -22,7 +22,7 @@ jobs:
       run: |
         gradle wrapper --gradle-version 9.4.0
         chmod +x gradlew
-        ./gradlew assembleDebug -Pandroid.signing.store.file="" -Pandroid.signing.store.password="" -Pandroid.signing.key.alias="" -Pandroid.signing.key.password=""
+        ./gradlew assembleDebug -x validateSigningDebug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
