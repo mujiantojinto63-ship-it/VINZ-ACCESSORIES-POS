@@ -18,10 +18,9 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Generate Gradle Wrapper and Build APK
+    - name: Set Gradle Wrapper with stable version
       run: |
-        # Membuat file gradlew secara otomatis jika belum ada
-        gradle wrapper
+        gradle wrapper --gradle-version 8.5
         chmod +x gradlew
         ./gradlew assembleDebug
 
