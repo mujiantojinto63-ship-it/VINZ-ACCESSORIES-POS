@@ -1,0 +1,6 @@
+{
+  "name": "VINZ ACCESSORIES",
+  "description": "Aplikasi Kasir POS Phone Accessories dengan Level Harga, Stok, Pelanggan, Impor/Ekspor, Jurnal, PO, dan Bluetooth Print.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
