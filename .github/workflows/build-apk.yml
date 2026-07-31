@@ -20,7 +20,7 @@ jobs:
 
     - name: Set Gradle Wrapper with stable version
       run: |
-        gradle wrapper --gradle-version 8.5
+        gradle wrapper --gradle-version 9.4.0
         chmod +x gradlew
         ./gradlew assembleDebug
 
