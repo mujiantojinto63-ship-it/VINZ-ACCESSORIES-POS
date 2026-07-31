@@ -18,6 +18,12 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    - name: Remove local keystore config causing error
+      run: |
+        # Cari file build.gradle atau build.gradle.kts di dalam folder app dan hapus blok signingConfigs-nya secara aman
+        find . -path "*/app/build.gradle*" -type f -exec sed -i '/signingConfigs {/,/}/d' {} +
+        find . -path "*/app/build.gradle*" -type f -exec sed -i '/signingConfig /d' {} +
+
     - name: Build APK with Gradle
       run: |
         GRADLEW_PATH=$(find . -name "gradlew" -type f)
@@ -27,11 +33,10 @@ jobs:
         fi
         
         chmod +x $GRADLEW_PATH
-        # Menggunakan assembleRelease untuk menghindari validasi keystore debug lokal
-        $GRADLEW_PATH assembleRelease
+        $GRADLEW_PATH assembleDebug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: app-release
-        path: '**/app/build/outputs/apk/release/*.apk'
+        name: app-debug
+        path: '**/app/build/outputs/apk/debug/app-debug.apk'
