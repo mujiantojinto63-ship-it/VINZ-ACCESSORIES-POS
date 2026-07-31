@@ -18,11 +18,11 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Set Gradle Wrapper with stable version
+    - name: Build APK with Gradle
       run: |
         gradle wrapper --gradle-version 9.4.0
         chmod +x gradlew
-        ./gradlew assembleDebug
+        ./gradlew assembleDebug -Pandroid.injected.signing.store.file=""
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
